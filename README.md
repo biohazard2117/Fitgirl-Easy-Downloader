@@ -9,6 +9,9 @@ Ensure you have the following installed before running the script :
   - `beautifulsoup4`
   - `tqdm`
   - `colorama`
+```bash
+pip install requests beautifulsoup4 tqdm colorama
+```
 
 
 ## Usage
