@@ -31,13 +31,12 @@ To extract and copy all direct download links automatically, follow these steps:
    ```bash
    pip install requests beautifulsoup4 pyperclip
    ```
-3. Save the script as **`get_links.py`**.
-4. Run the script:
+3. Run the script:
    ```bash
    python get_links.py
    ```
-5. Follow the on-screen instructions.
-6. All matching links will be displayed and **automatically copied to your clipboard**.
+4. Follow the on-screen instructions.
+5. All matching links will be displayed and **automatically copied to your clipboard**.
 
 
 # Disclaimer
