@@ -1,40 +1,9 @@
 import os, re, requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
-from datetime import datetime
-from colorama import Fore, Style
+from aria2_downloader import download_with_aria2
+from logger import console
 
-
-class console:
-    def __init__(self) -> None:
-        self.colors = {"green": Fore.GREEN, "red": Fore.RED, "yellow": Fore.YELLOW, "blue": Fore.BLUE, "magenta": Fore.MAGENTA, "cyan": Fore.CYAN, "white": Fore.WHITE, "black": Fore.BLACK, "reset": Style.RESET_ALL, "lightblack": Fore.LIGHTBLACK_EX, "lightred": Fore.LIGHTRED_EX, "lightgreen": Fore.LIGHTGREEN_EX, "lightyellow": Fore.LIGHTYELLOW_EX, "lightblue": Fore.LIGHTBLUE_EX, "lightmagenta": Fore.LIGHTMAGENTA_EX, "lightcyan": Fore.LIGHTCYAN_EX, "lightwhite": Fore.LIGHTWHITE_EX}
-
-    def clear(self):
-        os.system("cls" if os.name == "nt" else "clear")
-
-    def timestamp(self):
-        return datetime.now().strftime("%H:%M:%S")
-    
-    def success(self, message, obj):
-        print(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors['lightgreen']}SUCC {self.colors['lightblack']}• {self.colors['white']}{message} : {self.colors['lightgreen']}{obj}{self.colors['white']} {self.colors['reset']}")
-
-    def error(self, message, obj):
-        print(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors['lightred']}ERRR {self.colors['lightblack']}• {self.colors['white']}{message} : {self.colors['lightred']}{obj}{self.colors['white']} {self.colors['reset']}")
-
-    def done(self, message, obj):
-        print(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors['lightmagenta']}DONE {self.colors['lightblack']}• {self.colors['white']}{message} : {self.colors['lightmagenta']}{obj}{self.colors['white']} {self.colors['reset']}")
-
-    def warning(self, message, obj):
-        print(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors['lightyellow']}WARN {self.colors['lightblack']}• {self.colors['white']}{message} : {self.colors['lightyellow']}{obj}{self.colors['white']} {self.colors['reset']}")
-
-    def info(self, message, obj):
-        print(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors['lightblue']}INFO {self.colors['lightblack']}• {self.colors['white']}{message} : {self.colors['lightblue']}{obj}{self.colors['white']} {self.colors['reset']}")
-
-    def custom(self, message, obj, color):
-        print(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors[color.upper()]}{color.upper()} {self.colors['lightblack']}• {self.colors['white']}{message} : {self.colors[color.upper()]}{obj}{self.colors['white']} {self.colors['reset']}")
-
-    def input(self, message):
-        return input(f"{self.colors['lightblack']}{self.timestamp()} » {self.colors['lightcyan']}INPUT   {self.colors['lightblack']}• {self.colors['white']}{message}{self.colors['reset']}")
 
 downloads_folder = "downloads"
 os.makedirs(downloads_folder, exist_ok=True)
@@ -70,7 +39,7 @@ def download_file(download_url, output_path):
 
         log.success(f"Successfully Downloaded File", F"{output_path[:35]}...{output_path[55:]}")
     else:
-        log.error(f"Failed To Fownload File", response.status_code)
+        log.error(f"Failed To Download File", response.status_code)
 
 def remove_link(processed_link, input_file='input.txt'):
     with open(input_file, 'r') as file:
@@ -109,7 +78,7 @@ for link in links:
             log.info(f"Found Download Url", f"{download_url[:70]}...")
             output_path = os.path.join(downloads_folder, file_name)
             try:
-                download_file(download_url, output_path)
+                download_with_aria2(download_url, output_path)
                 remove_link(link)
             except Exception as e:
                 log.error(f"Failed To Download File", str(e))
