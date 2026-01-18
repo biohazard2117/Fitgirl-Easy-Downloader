@@ -13,6 +13,26 @@ Ensure you have the following installed before running the script :
 pip install requests beautifulsoup4 tqdm colorama
 ```
 
+## Installing aria2
+
+aria2 is required for fast and reliable multi-connection downloads.
+
+### Linux
+```bash
+sudo apt install aria2
+```
+
+### MacOS
+```
+brew install aria2
+```
+
+### Windows
+1. Download aria2 from:
+2. https://github.com/aria2/aria2/releases
+3. Extract the archive.
+4. Add aria2c.exe to your PATH environment variable.
+
 
 ## Usage
 1. **Prepare Input Links** : Add your URLs to `input.txt`, one per line.
